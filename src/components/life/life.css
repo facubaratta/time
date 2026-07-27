@@ -60,9 +60,7 @@
   }
 
   .remaining-percentage {
-    align-items: flex-start;
     margin-top: 4px;
-    text-align: left;
   }
 
   .life-stats > :last-child {
