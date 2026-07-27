@@ -5,7 +5,6 @@ export type Period = {
   detail: string;
   start: Date;
   end: Date;
-  columns: number;
 };
 
 const getDay = (dayStart: Date, dayName: string): Period => {
@@ -17,7 +16,6 @@ const getDay = (dayStart: Date, dayName: string): Period => {
     detail: dayName,
     start: dayStart,
     end: dayEnd,
-    columns: 2,
   };
 };
 
@@ -37,7 +35,6 @@ const getWeek = (weekDate: Date, dayStart: Date): Period => {
     detail: `#${weekNumber}`,
     start: weekStart,
     end: weekEnd,
-    columns: 2,
   };
 };
 
@@ -48,7 +45,6 @@ const getMonth = (month: number, year: number, name: string): Period => {
     detail: `${name} · ${number}`,
     start: new Date(year, month, 1),
     end: new Date(year, month + 1, 1),
-    columns: 2,
   };
 };
 
@@ -57,7 +53,6 @@ const getYear = (year: number): Period => ({
   detail: String(year),
   start: new Date(year, 0, 1),
   end: new Date(year + 1, 0, 1),
-  columns: 3,
 });
 
 const getDecade = (year: number): Period => {
@@ -67,7 +62,6 @@ const getDecade = (year: number): Period => {
     detail: `${decade}–${decade + 9}`,
     start: new Date(decade, 0, 1),
     end: new Date(decade + 10, 0, 1),
-    columns: 3,
   };
 };
 

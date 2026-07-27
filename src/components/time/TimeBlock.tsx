@@ -15,7 +15,6 @@ const TimeBlock = ({ now, period }: { now: Date; period: Period }) => {
         justifyContent: "space-between",
         borderRight: "1px solid #292929",
         borderBottom: "1px solid #292929",
-        gridColumn: `span ${period.columns}`,
       }}
     >
       <div
