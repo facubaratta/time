@@ -63,7 +63,15 @@ function LifeStats({ remaining }: { remaining: number }) {
     Seconds: remaining / 1000,
   };
   return (
-    <div className="life-stats">
+    <div
+      className="life-stats"
+      style={{
+        display: "grid",
+        gap: 1,
+        borderTop: "1px solid #333",
+        background: "#333",
+      }}
+    >
       {Object.entries(stats).map(([label, value]) => (
         <Stat key={label} label={label} value={value} />
       ))}

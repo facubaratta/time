@@ -8,8 +8,24 @@ const Input = ({ currentAge, expectancy, onChange }: Props) => {
   const enabled = currentAge !== null;
   const minimum = currentAge ?? 0;
   return (
-    <div className="expectancy-input">
-      <div className="expectancy-input__value">
+    <div
+      className="expectancy-input"
+      style={{
+        width: "100%",
+        minWidth: 0,
+        display: "grid",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          minHeight: 58,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
         <span
           style={{
             display: "block",
@@ -38,13 +54,22 @@ const Input = ({ currentAge, expectancy, onChange }: Props) => {
       </div>
 
       <label
-        className="expectancy-slider"
         style={{
+          minWidth: 0,
+          minHeight: 58,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
           opacity: enabled ? 1 : 0.45,
         }}
       >
         <input
           style={{
+            width: "100%",
+            height: 28,
+            display: "block",
+            margin: 0,
+            accentColor: "#fff",
             cursor: enabled ? "pointer" : "not-allowed",
           }}
           type="range"

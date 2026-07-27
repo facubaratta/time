@@ -21,16 +21,26 @@ function LifeExpectancy({ birthDate }: { birthDate: string }) {
   const elapsed = date && expectedEnd ? progress(now, date, expectedEnd) : null;
 
   return (
-    <div className="life-expectancy">
-      <div className="life-expectancy__content">
+    <div style={{ border: "1px solid #333" }}>
+      <div
+        className="life-expectancy__content"
+        style={{ minWidth: 0 }}
+      >
         <Input
           currentAge={currentAge}
           expectancy={effectiveExpectancy}
           onChange={setExpectancy}
         />
         {date && expectedEnd && elapsed !== null ? (
-          <div className="life-progress">
-            <div className="life-progress__bar">
+          <div
+            className="life-progress"
+            style={{
+              minWidth: 0,
+              display: "grid",
+              alignItems: "center",
+            }}
+          >
+            <div style={{ minWidth: 0 }}>
               <ProgressBar
                 label="Estimated life elapsed"
                 value={elapsed}

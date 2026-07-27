@@ -7,8 +7,19 @@ export interface Cycle {
 }
 
 const LifeCycle = ({ label, detail, value }: Cycle) => (
-  <div className="life-cycle">
-    <div className="life-cycle__header">
+  <div
+    className="life-cycle"
+    style={{ minWidth: 0, border: "1px solid #333" }}
+  >
+    <div
+      className="life-cycle__header"
+      style={{
+        minWidth: 0,
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "space-between",
+      }}
+    >
       <div>
         <strong style={{ display: "block", fontSize: 18 }}>{label}</strong>
         <span

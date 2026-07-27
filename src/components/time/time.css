@@ -1,0 +1,32 @@
+.time-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.time-block {
+  padding: 20px;
+}
+
+.time-block__header {
+  gap: 20px;
+}
+
+@media (max-width: 720px) {
+  .time-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .time-block {
+    grid-column: auto !important;
+    min-height: 112px;
+  }
+}
+
+@media (max-width: 420px) {
+  .time-block {
+    padding: 16px;
+  }
+
+  .time-block__header {
+    gap: 12px;
+  }
+}

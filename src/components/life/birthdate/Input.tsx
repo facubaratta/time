@@ -21,7 +21,17 @@ const Input = ({ birthDate, age, onChange }: Props) => {
     now.getDate(),
   );
   return (
-    <label className="birth-date-input">
+    <label
+      className="birth-date-input"
+      style={{
+        minWidth: 0,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        gap: 10,
+        border: "1px solid #333",
+      }}
+    >
       <span style={{ color: "#777" }}>
         {age !== null ? `Current age: ${age}` : "Choose your birth date"}
       </span>
@@ -31,6 +41,17 @@ const Input = ({ birthDate, age, onChange }: Props) => {
         max={dateInputValue(now)}
         value={birthDate}
         onChange={(event) => onChange(event.target.value)}
+        style={{
+          minWidth: 0,
+          width: "100%",
+          padding: 0,
+          border: 0,
+          outline: 0,
+          background: "transparent",
+          color: "#fff",
+          colorScheme: "dark",
+          fontSize: "clamp(20px, 5vw, 24px)",
+        }}
       />
     </label>
   );

@@ -1,5 +1,13 @@
 const RemainingPercentage = ({ elapsed }: { elapsed: number | null }) => (
-  <div className="remaining-percentage">
+  <div
+    className="remaining-percentage"
+    style={{
+      minHeight: 58,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    }}
+  >
     <span
       style={{
         display: "block",

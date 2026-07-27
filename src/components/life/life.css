@@ -1,0 +1,87 @@
+.birth-date-input {
+  flex: 0 1 240px;
+  padding: 20px;
+}
+
+.birth-date-cycles {
+  flex: 1 1 440px;
+}
+
+.birth-date-placeholder {
+  flex: 1 1 440px;
+}
+
+.life-cycle {
+  padding: 20px;
+}
+
+.life-cycle__header {
+  gap: 20px;
+}
+
+.life-expectancy__content {
+  padding: 20px;
+}
+
+.expectancy-input {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 50px);
+}
+
+.life-progress {
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 20px;
+}
+
+.remaining-percentage {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.life-stats {
+  grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
+}
+
+@media (max-width: 720px) {
+  .birth-date-input,
+  .birth-date-cycles,
+  .birth-date-placeholder {
+    flex-basis: 100%;
+  }
+
+  .expectancy-input {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .life-progress {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .remaining-percentage {
+    align-items: flex-start;
+    margin-top: 4px;
+    text-align: left;
+  }
+
+  .life-stats > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .birth-date-input,
+  .life-cycle,
+  .life-expectancy__content {
+    padding: 16px;
+  }
+
+  .life-cycle__header {
+    gap: 12px;
+  }
+
+  .life-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

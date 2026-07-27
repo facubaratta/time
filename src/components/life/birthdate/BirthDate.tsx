@@ -54,24 +54,41 @@ const BirthDate = ({ birthDate, onChange }: Props) => {
   const cycles = date && age !== null ? getCycles(now, date, age) : [];
 
   return (
-  <div className="birth-date-row">
-    <Input
-      birthDate={birthDate}
-      age={age}
-      onChange={onChange}
-    />
-    {age !== null ? (
-      <div className="birth-date-cycles">
-        {cycles.map((cycle) => (
-          <LifeCycle key={cycle.label} {...cycle} />
-        ))}
-      </div>
-    ) : (
-      <div className="birth-date-placeholder">
-        Birthday and age-decade progress
-      </div>
-    )}
-  </div>
-)};
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <Input birthDate={birthDate} age={age} onChange={onChange} />
+      {age !== null ? (
+        <div
+          className="birth-date-cycles"
+          style={{
+            minWidth: 0,
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(auto-fit, minmax(min(220px, 100%), 1fr))",
+          }}
+        >
+          {cycles.map((cycle) => (
+            <LifeCycle key={cycle.label} {...cycle} />
+          ))}
+        </div>
+      ) : (
+        <div
+          className="birth-date-placeholder"
+          style={{
+            minWidth: 0,
+            minHeight: 100,
+            display: "grid",
+            placeItems: "center",
+            padding: 20,
+            border: "1px solid #333",
+            color: "#666",
+            textAlign: "center",
+          }}
+        >
+          Birthday and age-decade progress
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default BirthDate;
