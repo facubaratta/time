@@ -8,6 +8,16 @@ import LifeStats from "./LifeStats";
 import Input from "./Input";
 import RemainingPercentage from "./RemainingPercentage";
 
+const sectionColors = [
+  "#a78bfa",
+  "#60a5fa",
+  "#22d3ee",
+  "#34d399",
+  "#facc15",
+  "#fb923c",
+  "#f472b6",
+];
+
 function LifeExpectancy({ birthDate }: { birthDate: string }) {
   const now = useNow();
   const [expectancy, setExpectancy] = useState(80);
@@ -19,6 +29,24 @@ function LifeExpectancy({ birthDate }: { birthDate: string }) {
       ? birthdayInYear(date, date.getFullYear() + effectiveExpectancy)
       : null;
   const elapsed = date && expectedEnd ? progress(now, date, expectedEnd) : null;
+  const sectionBoundaries = [
+    0,
+    7,
+    12,
+    18,
+    ...Array.from(
+      { length: Math.max(0, Math.ceil((effectiveExpectancy - 30) / 10)) },
+      (_, index) => 30 + index * 10,
+    ),
+    effectiveExpectancy,
+  ]
+    .filter((age) => age <= effectiveExpectancy)
+    .filter((age, index, ages) => age !== ages[index - 1]);
+  const sections = sectionBoundaries.slice(1).map((age, index) => ({
+    color: sectionColors[index % sectionColors.length],
+    width:
+      ((age - sectionBoundaries[index]) / effectiveExpectancy) * 100,
+  }));
 
   return (
     <div style={{ border: "1px solid #333" }}>
@@ -45,11 +73,13 @@ function LifeExpectancy({ birthDate }: { birthDate: string }) {
                 label="Estimated life elapsed"
                 value={elapsed}
                 large
+                sections={sections}
               />
               <LifeTimeline
                 birthYear={date.getFullYear()}
                 currentPosition={elapsed}
                 endYear={expectedEnd.getFullYear()}
+                sectionColors={sections.map((section) => section.color)}
               />
             </div>
             <RemainingPercentage elapsed={elapsed} />

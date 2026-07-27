@@ -4,9 +4,15 @@ type Props = {
   birthYear: number
   currentPosition: number
   endYear: number
+  sectionColors: string[]
 }
 
-function LifeTimeline({ birthYear, currentPosition, endYear }: Props) {
+function LifeTimeline({
+  birthYear,
+  currentPosition,
+  endYear,
+  sectionColors,
+}: Props) {
   const timelineRef = useRef<HTMLDivElement>(null)
   const todayRef = useRef<HTMLSpanElement>(null)
   const [todayIsVisible, setTodayIsVisible] = useState(false)
@@ -67,11 +73,12 @@ function LifeTimeline({ birthYear, currentPosition, endYear }: Props) {
         style={{
           position: 'absolute',
           left: 0,
+          color: sectionColors[0],
         }}
       >
         {birthYear}
       </span>
-      {milestoneAges.map((age) => (
+      {milestoneAges.map((age, index) => (
         <span
           key={age}
           data-timeline-label
@@ -79,6 +86,7 @@ function LifeTimeline({ birthYear, currentPosition, endYear }: Props) {
             position: 'absolute',
             left: `${(age / expectancy) * 100}%`,
             transform: 'translateX(-50%)',
+            color: sectionColors[index + 1],
           }}
         >
           {age}
@@ -101,6 +109,7 @@ function LifeTimeline({ birthYear, currentPosition, endYear }: Props) {
         style={{
           position: 'absolute',
           right: 0,
+          color: sectionColors.at(-1),
         }}
       >
         {endYear}
