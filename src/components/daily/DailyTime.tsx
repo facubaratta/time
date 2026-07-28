@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import ActivityList from "./ActivityList";
+import ActivityList from "./activities/ActivityList";
 import { calculateDailyTotals } from "./dailyTimeUtils";
-import DailySummary from "./DailySummary";
+import DailySummary from "./summary/DailySummary";
 import type { Activity } from "./dailyTimeUtils";
 import "./daily.css";
 

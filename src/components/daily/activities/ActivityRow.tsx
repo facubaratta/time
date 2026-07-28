@@ -1,6 +1,6 @@
 import { useId } from "react";
-import { formatHours } from "./dailyTimeUtils";
-import type { Activity } from "./dailyTimeUtils";
+import { formatHours } from "../dailyTimeUtils";
+import type { Activity } from "../dailyTimeUtils";
 
 type EditableField = "label" | "hours" | "color";
 

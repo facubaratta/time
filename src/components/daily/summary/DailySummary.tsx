@@ -1,5 +1,5 @@
-import { DAY_HOURS, formatHours } from "./dailyTimeUtils";
-import type { Activity, DailyTotals } from "./dailyTimeUtils";
+import { DAY_HOURS, formatHours } from "../dailyTimeUtils";
+import type { Activity, DailyTotals } from "../dailyTimeUtils";
 
 type Props = {
   totals: DailyTotals;

@@ -1,6 +1,6 @@
 import ActivityRow from "./ActivityRow";
-import { formatHours, totalActivityHours } from "./dailyTimeUtils";
-import type { Activity } from "./dailyTimeUtils";
+import { formatHours, totalActivityHours } from "../dailyTimeUtils";
+import type { Activity } from "../dailyTimeUtils";
 
 type Props = {
   title: string;
