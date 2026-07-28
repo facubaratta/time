@@ -7,24 +7,19 @@ import TimePeriods from "./components/time/TimePeriods";
 
 function App() {
   return (
-    <main
-      className="app-shell"
-      style={{
-        paddingBottom: "max(40px, env(safe-area-inset-bottom))",
-      }}
-    >
+    <main id="top" className="app-shell">
       <header className="site-header">
-        <div className="site-kicker">
+        <div className="site-meta">
           <span>Personal time atlas</span>
           <span aria-hidden="true">TM—01</span>
         </div>
         <h1>
-          Time{" "}
+          Time
           <span>Magnitude</span>
         </h1>
         <p>
-          See the scale of time—from the hour in front of you to the decades
-          that make a life.
+          A scale model of the time in front of you, from the current day to a
+          complete lifetime.
         </p>
         <TimePeriods />
       </header>
@@ -33,6 +28,10 @@ function App() {
       <LifeProgress />
       <DailyLifeBar />
       <LifeStats />
+      <footer className="site-footer">
+        <span>Time Magnitude</span>
+        <a href="#top">Return to top</a>
+      </footer>
     </main>
   );
 }

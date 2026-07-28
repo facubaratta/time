@@ -1,10 +1,103 @@
 .daily-columns {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line);
+  background: var(--line);
 }
 
-.daily-summary__meta,
-.daily-list {
+.daily-life-bar {
+  margin-top: 1px;
+}
+
+.daily-summary {
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.daily-bar {
+  height: 104px;
   position: relative;
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #080808;
+}
+
+.daily-bar > span {
+  height: 100%;
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
+  transition: flex-basis 220ms ease;
+}
+
+.daily-bar__free {
+  background: #111;
+}
+
+.daily-bar__moon {
+  width: 30px;
+  height: 30px !important;
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  overflow: visible !important;
+  border-radius: 50%;
+  background: #fff3bd;
+  box-shadow: 0 0 18px rgba(255, 239, 174, 0.28);
+  transform: translate(-50%, -50%);
+}
+
+.daily-bar__moon > span {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: -7px;
+  left: 9px;
+  border-radius: 50%;
+  background: #111a3b;
+}
+
+.daily-bar__time-left {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 14px clamp(14px, 3vw, 24px);
+  pointer-events: none;
+}
+
+.daily-bar__time-left > div {
+  padding: 9px 12px;
+  background: rgba(0, 0, 0, 0.82);
+  text-align: right;
+}
+
+.daily-bar__time-left span {
+  display: block;
+  color: #aaa;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.daily-bar__time-left strong {
+  display: block;
+  margin-top: 4px;
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 650;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.daily-bar__time-left small {
+  color: #777;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 .daily-summary__meta {
@@ -17,6 +110,25 @@
 
 .daily-summary__legend {
   min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 26px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.daily-summary__legend span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.daily-summary__legend i {
+  width: 10px;
+  height: 10px;
+  display: block;
+  flex: 0 0 auto;
+  border: 1px solid #555;
 }
 
 .daily-summary__disclaimer {
@@ -25,7 +137,7 @@
   flex: 0 0 auto;
   gap: 7px;
   margin: 0;
-  color: #777;
+  color: var(--muted);
   font-size: 10px;
   line-height: 1.4;
 }
@@ -38,31 +150,53 @@
   place-items: center;
   border: 1px solid #555;
   border-radius: 50%;
-  color: #aaa;
   font-family: Georgia, serif;
   font-size: 9px;
   font-style: italic;
-  line-height: 1;
+}
+
+.daily-list {
+  position: relative;
+  background: var(--surface);
 }
 
 .daily-list + .daily-list {
-  border-left: 1px solid #333;
+  border-left: 1px solid var(--line) !important;
+  background: #161614;
+}
+
+.daily-list > div:first-child span {
+  color: var(--muted) !important;
+}
+
+.daily-list h3 {
+  font-size: clamp(24px, 2.5vw, 34px) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.05em;
 }
 
 .daily-activity {
-  transition: background-color 180ms ease;
+  border-color: var(--line-soft) !important;
+  transition: background-color 150ms ease;
 }
 
 .daily-activity:focus-within {
   background: rgba(255, 255, 255, 0.025);
 }
 
-.daily-activity input:focus-visible,
-.daily-activity select:focus-visible,
-.daily-add:focus-visible,
-.daily-activity__remove:focus-visible {
-  outline: 1px solid var(--warm);
-  outline-offset: 3px;
+.daily-activity input:not([type="color"]),
+.daily-activity select {
+  color: var(--text) !important;
+}
+
+.daily-activity input[type="number"],
+.daily-activity select {
+  border-color: var(--line) !important;
+  background: #10100f !important;
+}
+
+.daily-activity input[type="range"] {
+  accent-color: var(--signal) !important;
 }
 
 .daily-activity__color input::-webkit-color-swatch-wrapper {
@@ -74,54 +208,109 @@
   border-radius: 50%;
 }
 
+.daily-activity__color input::-moz-color-swatch {
+  border: 0;
+  border-radius: 50%;
+}
+
+.night-swatch > span {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #fff3bd;
+  box-shadow: 0 0 10px rgba(255, 239, 174, 0.24);
+}
+
+.night-swatch > span::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: -4px;
+  left: 5px;
+  border-radius: 50%;
+  background: #172453;
+}
+
 .daily-activity__remove {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   border: 0;
   background: transparent;
-  color: #777;
+  color: var(--muted);
   cursor: pointer;
   font-size: 20px;
-  line-height: 1;
 }
 
 .daily-activity__remove:hover {
-  color: #fff;
+  color: var(--text);
 }
 
 .daily-add {
+  min-height: 38px;
   margin-top: 18px;
-  padding: 7px 0;
+  padding: 0;
   border: 0;
   background: transparent;
-  color: #aaa;
+  color: var(--muted);
   cursor: pointer;
-  font-size: 13px;
-  letter-spacing: 0.01em;
-  transition:
-    color 180ms ease,
-    transform 180ms ease;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
 }
 
 .daily-add:hover {
-  color: #fff;
-  transform: translateX(3px);
+  color: var(--signal);
 }
 
 @media (max-width: 720px) {
-  .daily-summary__meta {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-  }
-
   .daily-columns {
     grid-template-columns: 1fr;
   }
 
   .daily-list + .daily-list {
-    border-top: 1px solid #333;
-    border-left: 0;
+    border-top: 1px solid var(--line) !important;
+    border-left: 0 !important;
+  }
+
+  .daily-summary__meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 540px) {
+  .daily-list {
+    padding: 22px 16px !important;
+  }
+
+  .daily-activity {
+    grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+    grid-template-areas: "color name remove" "hours hours hours" !important;
+    padding: 12px 0;
+    row-gap: 8px;
+  }
+
+  .daily-activity output {
+    grid-area: hours !important;
+    justify-self: end;
+  }
+
+  .daily-activity__color input,
+  .night-swatch,
+  .daily-activity__remove {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .daily-activity input[type="number"],
+  .daily-activity select,
+  .daily-activity input[type="range"] {
+    min-height: 44px;
   }
 }

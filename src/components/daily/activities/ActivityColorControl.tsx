@@ -12,6 +12,7 @@ function ActivityColorControl({
   if (activity.visual === "night") {
     return (
       <span
+        className="night-swatch"
         aria-label="Night sky"
         style={{
           width: 30,
@@ -22,11 +23,9 @@ function ActivityColorControl({
           border: "1px solid #444",
           borderRadius: "50%",
           background: "linear-gradient(135deg, #080d22, #172453)",
-          color: "#fff3bd",
-          fontSize: 19,
         }}
       >
-        ☾
+        <span aria-hidden="true" />
       </span>
     )
   }

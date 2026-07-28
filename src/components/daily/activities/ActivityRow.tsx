@@ -37,7 +37,7 @@ function ActivityRow({
         gridTemplateColumns:
           hoursControl === "slider"
             ? "34px minmax(0, 1fr) max-content 34px"
-            : "34px minmax(0, 1fr) 174px 34px",
+            : "34px minmax(0, 1fr) 194px 34px",
         gridTemplateAreas:
           hoursControl === "slider"
             ? '"color name value remove" "color hours hours remove"'

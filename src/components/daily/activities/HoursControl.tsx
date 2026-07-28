@@ -46,9 +46,9 @@ function HoursControl({
         </output>
       )}
       <label
-        style={{
-          minWidth: 0,
-          gridArea: "hours",
+          style={{
+            minWidth: 0,
+            gridArea: "hours",
           display: isSlider ? "block" : "flex",
           alignItems: "center",
           gap: 6,
@@ -88,13 +88,14 @@ function HoursControl({
         />
         {!isSlider && (
           <select
+            className="daily-activity__period"
             aria-label={`Frequency for ${activityName}`}
             value={period}
             disabled={periodLocked}
             style={{
-              minWidth: 0,
+              minWidth: 104,
               flex: 1,
-              padding: "6px",
+              padding: "6px 26px 6px 8px",
               border: "1px solid #3a3a3a",
               borderRadius: 4,
               background: "#111",

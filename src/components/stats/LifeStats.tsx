@@ -108,11 +108,11 @@ function LifeStats() {
         : null,
       NIGHT_SKY_BACKGROUND,
     ],
-    ["Weekends", remaining === null ? null : remaining / WEEK],
-    ["Days", remainingDays],
-    ["Hours", remaining === null ? null : remaining / HOUR],
-    ["Minutes", remaining === null ? null : remaining / MINUTE],
-    ["Seconds", remaining === null ? null : remaining / 1000],
+    ["Weekends left", remaining === null ? null : remaining / WEEK],
+    ["Days left", remainingDays],
+    ["Hours left", remaining === null ? null : remaining / HOUR],
+    ["Minutes left", remaining === null ? null : remaining / MINUTE],
+    ["Seconds left", remaining === null ? null : remaining / 1000],
   ];
 
   return (
@@ -153,7 +153,7 @@ function LifeStats() {
             <strong>{formatAnnualDuration(totals.remaining)}</strong>
           </div>
           <div>
-            <span>Drifting each year</span>
+            <span>Reclaimable each year</span>
             <strong>{formatAnnualDuration(totals.wasted)}</strong>
           </div>
           <div>
