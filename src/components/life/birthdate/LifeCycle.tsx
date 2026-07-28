@@ -7,10 +7,7 @@ export interface Cycle {
 }
 
 const LifeCycle = ({ label, detail, value }: Cycle) => (
-  <div
-    className="life-cycle"
-    style={{ minWidth: 0, border: "1px solid #333" }}
-  >
+  <div className="life-cycle" style={{ minWidth: 0 }}>
     <div
       className="life-cycle__header"
       style={{
@@ -21,7 +18,7 @@ const LifeCycle = ({ label, detail, value }: Cycle) => (
       }}
     >
       <div>
-        <strong style={{ display: "block", fontSize: 18 }}>{label}</strong>
+        <strong style={{ display: "block", fontSize: 14 }}>{label}</strong>
         <span
           style={{
             display: "block",
@@ -35,7 +32,7 @@ const LifeCycle = ({ label, detail, value }: Cycle) => (
       </div>
       <span
         style={{
-          fontSize: 28,
+          fontSize: 22,
           letterSpacing: "-0.05em",
         }}
       >

@@ -22,14 +22,13 @@ const Input = ({ birthDate, age, onChange }: Props) => {
   );
   return (
     <label
+      className="birth-date-input"
       style={{
         minWidth: 0,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         gap: 10,
-        padding: 20,
-        border: "1px solid #333",
       }}
     >
       <span style={{ color: "#777" }}>

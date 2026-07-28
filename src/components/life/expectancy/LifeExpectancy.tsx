@@ -56,16 +56,15 @@ function LifeExpectancy({
   }));
 
   return (
-    <div style={{ border: "1px solid #333" }}>
-      <div
-        className="life-expectancy__content"
-        style={{ minWidth: 0 }}
-      >
+    <div className="life-expectancy-layout">
+      <div className="life-expectancy-input-cell">
         <Input
           currentAge={currentAge}
           expectancy={effectiveExpectancy}
           onChange={onExpectancyChange}
         />
+      </div>
+      <div className="life-expectancy-progress-cell">
         {date && expectedEnd && elapsed !== null ? (
           <div
             className="life-progress"
@@ -92,13 +91,7 @@ function LifeExpectancy({
             <RemainingPercentage elapsed={elapsed} />
           </div>
         ) : (
-          <div
-            style={{
-              marginTop: 28,
-              color: "#666",
-              fontSize: 15,
-            }}
-          >
+          <div style={{ color: "#666", fontSize: 15 }}>
             Add your birth date to estimate time remaining
           </div>
         )}

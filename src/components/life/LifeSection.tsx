@@ -7,7 +7,7 @@ function LifeSection() {
   const { birthDate, lifeExpectancy } = useTimeStore();
 
   return (
-    <section aria-label="Life expectancy">
+    <section className="life-composition" aria-label="Life expectancy">
       <BirthDate birthDate={birthDate} onChange={timeStore.setBirthDate} />
       <LifeExpectancy
         birthDate={birthDate}
