@@ -21,11 +21,11 @@ function Swatch({ activity }: { activity?: Activity }) {
 function ActivityLegend({ activities }: { activities: Activity[] }) {
   return (
     <div
+      className="daily-summary__legend"
       style={{
         display: "flex",
         flexWrap: "wrap",
         gap: "16px 26px",
-        marginTop: 18,
         color: "#888",
         fontSize: 11,
       }}

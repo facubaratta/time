@@ -21,7 +21,13 @@ function DailySummary({ totals, activities }: Props) {
       }}
     >
       <DailyBar activities={activeActivities} remaining={totals.remaining} />
-      <ActivityLegend activities={activeActivities} />
+      <div className="daily-summary__meta">
+        <ActivityLegend activities={activeActivities} />
+        <p className="daily-summary__disclaimer">
+          <span aria-hidden="true">i</span>
+          Weekly entries are averaged across all seven days.
+        </p>
+      </div>
     </div>
   )
 }

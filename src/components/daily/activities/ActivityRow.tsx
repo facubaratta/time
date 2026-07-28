@@ -1,8 +1,3 @@
-import {
-  averageDailyHours,
-  formatAnnualDuration,
-  formatHours,
-} from "../dailyTimeUtils"
 import type { Activity } from "../dailyTimeUtils"
 import ActivityColorControl from "./ActivityColorControl"
 import HoursControl from "./HoursControl"
@@ -74,22 +69,6 @@ function ActivityRow({
             onChange(activity.id, "label", event.target.value)
           }
         />
-        {activity.visual === "night" && (
-          <span style={{ color: "#777", fontSize: 10 }}>
-            {formatAnnualDuration(averageDailyHours(activity))} per year
-          </span>
-        )}
-        {activity.period === "week" && (
-          <span
-            style={{
-              display: "block",
-              color: "#777",
-              fontSize: 10,
-            }}
-          >
-            {formatHours(averageDailyHours(activity))} per day on average
-          </span>
-        )}
       </label>
       {activity.locked ? (
         <span
