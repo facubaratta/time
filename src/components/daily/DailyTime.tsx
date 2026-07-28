@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import ActivityList from "./activities/ActivityList";
 import { calculateDailyTotals } from "./dailyTimeUtils";
-import DailySummary from "./summary/DailySummary";
 import { timeStore, useTimeStore } from "../../timeStore";
 import "./daily.css";
 
@@ -13,21 +12,8 @@ function DailyTime() {
   }, [obligations, timeWasters]);
 
   return (
-    <section aria-label="Daily time">
-      <DailySummary
-        totals={totals}
-        activities={[...obligations, ...timeWasters]}
-      />
-
-      <div
-        className="daily-columns"
-        style={{
-          display: "grid",
-          borderRight: "1px solid #333",
-          borderBottom: "1px solid #333",
-          borderLeft: "1px solid #333",
-        }}
-      >
+    <section id="day" className="daily-chapter" aria-label="Daily time settings">
+      <div className="daily-columns">
         <ActivityList
           eyebrow="Must do"
           title="Obligations"

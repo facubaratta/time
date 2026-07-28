@@ -3,12 +3,16 @@ import { DAY, HOUR, MINUTE, WEEK } from "../../time";
 import useNow from "../../useNow";
 import {
   DAY_HOURS,
+  NIGHT_SKY_BACKGROUND,
   averageDailyHours,
   calculateDailyTotals,
   formatAnnualDuration,
 } from "../daily/dailyTimeUtils";
-import { NIGHT_SKY_BACKGROUND } from "../daily/summary/NightSky";
-import { birthdayInYear, getAge, parseBirthDate } from "../life/lifeProgress";
+import {
+  birthdayInYear,
+  getAge,
+  parseBirthDate,
+} from "../life/lifeCalculations";
 import { useTimeStore } from "../../timeStore";
 import "./stats.css";
 

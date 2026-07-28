@@ -1,5 +1,13 @@
 export const DAY_HOURS = 24;
 export const MIN_ACTIVITY_HOURS = 0.5;
+export const NIGHT_SKY_BACKGROUND = `
+  radial-gradient(circle at 12% 22%, #fff 0 1px, transparent 1.5px),
+  radial-gradient(circle at 30% 68%, #c9d8ff 0 1px, transparent 1.5px),
+  radial-gradient(circle at 48% 18%, #fff 0 1px, transparent 1.5px),
+  radial-gradient(circle at 67% 72%, #d8e3ff 0 1px, transparent 1.5px),
+  radial-gradient(circle at 84% 30%, #fff 0 1px, transparent 1.5px),
+  linear-gradient(135deg, #080d22, #172453)
+`;
 
 export type Activity = {
   id: number;

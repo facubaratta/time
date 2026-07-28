@@ -1,5 +1,7 @@
+import DailyLifeBar from "./components/daily/DailyLifeBar";
 import DailyTime from "./components/daily/DailyTime";
-import LifeSection from "./components/life/LifeSection";
+import LifeProgress from "./components/life/LifeProgress";
+import LifeSettings from "./components/life/LifeSettings";
 import LifeStats from "./components/stats/LifeStats";
 import TimePeriods from "./components/time/TimePeriods";
 
@@ -26,8 +28,10 @@ function App() {
         </p>
         <TimePeriods />
       </header>
+      <LifeSettings />
       <DailyTime />
-      <LifeSection />
+      <LifeProgress />
+      <DailyLifeBar />
       <LifeStats />
     </main>
   );
