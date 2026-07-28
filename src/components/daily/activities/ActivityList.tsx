@@ -1,6 +1,7 @@
 import ActivityRow from "./ActivityRow";
 import {
   DAY_HOURS,
+  MIN_ACTIVITY_HOURS,
   activityFrequency,
   averageDailyHours,
   formatHours,
@@ -61,7 +62,10 @@ function ActivityList({
                       )
                     : Math.min(
                         maxHours ?? Number.POSITIVE_INFINITY,
-                        Math.max(0.5, Number(value) || 0.5),
+                        Math.max(
+                          MIN_ACTIVITY_HOURS,
+                          Number(value) || MIN_ACTIVITY_HOURS,
+                        ),
                       )
                   : value,
             }
@@ -86,6 +90,8 @@ function ActivityList({
             ? Math.max(0, (DAY_HOURS - otherDailyHours) / frequency)
             : Number.POSITIVE_INFINITY;
 
+        if (maxHours < MIN_ACTIVITY_HOURS) return activity;
+
         return {
           ...activity,
           period,
@@ -106,7 +112,9 @@ function ActivityList({
   const addActivity = () => {
     const availableHours = Math.max(0, DAY_HOURS - totalHoursUsed);
     const initialHours =
-      hoursControl === "slider" ? Math.min(1, availableHours) : 0.5;
+      hoursControl === "slider"
+        ? Math.min(1, availableHours)
+        : MIN_ACTIVITY_HOURS;
 
     if (hoursControl === "number" && availableHours < initialHours) return;
 
@@ -187,13 +195,14 @@ function ActivityList({
         className="daily-add"
         type="button"
         disabled={
-          hoursControl === "number" && DAY_HOURS - totalHoursUsed < 0.5
+          hoursControl === "number" &&
+          DAY_HOURS - totalHoursUsed < MIN_ACTIVITY_HOURS
         }
         onClick={addActivity}
         style={{
           opacity:
             hoursControl === "number" &&
-            DAY_HOURS - totalHoursUsed < 0.5
+            DAY_HOURS - totalHoursUsed < MIN_ACTIVITY_HOURS
               ? 0.35
               : 1,
         }}

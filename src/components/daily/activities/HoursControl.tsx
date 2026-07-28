@@ -1,5 +1,5 @@
 import { useId } from "react"
-import { formatHours } from "../dailyTimeUtils"
+import { MIN_ACTIVITY_HOURS, formatHours } from "../dailyTimeUtils"
 import type { Activity } from "../dailyTimeUtils"
 
 type Props = {
@@ -56,7 +56,7 @@ function HoursControl({
           id={inputId}
           aria-label={`Hours spent on ${activityName}`}
           type={isSlider ? "range" : "number"}
-          min={isSlider ? "0" : "0.5"}
+          min={isSlider ? 0 : MIN_ACTIVITY_HOURS}
           max={isSlider ? Math.min(12, maxHours ?? 12) : maxHours}
           step={isSlider ? "0.1" : "0.5"}
           value={activity.hours}

@@ -1,4 +1,5 @@
 export const DAY_HOURS = 24;
+export const MIN_ACTIVITY_HOURS = 0.5;
 
 export type Activity = {
   id: number;
