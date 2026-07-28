@@ -1,6 +1,8 @@
 import { useSyncExternalStore } from "react";
 import {
+  DAY_HOURS,
   defaultActivities,
+  totalActivityHours,
   type Activity,
 } from "./components/daily/dailyTimeUtils";
 
@@ -20,20 +22,58 @@ const defaultState = (): TimeState => ({
   lifeExpectancy: 80,
 });
 
-function isActivity(value: unknown): value is Activity {
-  if (!value || typeof value !== "object") return false;
+function normalizeActivity(value: unknown): Activity | null {
+  if (!value || typeof value !== "object") return null;
 
   const activity = value as Partial<Activity>;
-  return (
-    typeof activity.id === "number" &&
-    typeof activity.label === "string" &&
-    typeof activity.hours === "number" &&
-    Number.isFinite(activity.hours) &&
-    typeof activity.color === "string" &&
-    (activity.period === undefined ||
-      activity.period === "day" ||
-      activity.period === "week")
-  );
+  const period =
+    activity.period === "day" || activity.period === "week"
+      ? activity.period
+      : undefined;
+  const maxHours = period === "week" ? DAY_HOURS * 7 : DAY_HOURS;
+  const kind =
+    activity.kind === "sleep" || activity.visual === "night"
+      ? "sleep"
+      : undefined;
+
+  if (
+    typeof activity.id !== "number" ||
+    !Number.isSafeInteger(activity.id) ||
+    activity.id <= 0 ||
+    typeof activity.label !== "string" ||
+    typeof activity.hours !== "number" ||
+    !Number.isFinite(activity.hours) ||
+    activity.hours < 0 ||
+    activity.hours > maxHours ||
+    typeof activity.color !== "string" ||
+    !/^#[0-9a-f]{6}$/i.test(activity.color) ||
+    (activity.period !== undefined && period === undefined) ||
+    (activity.kind !== undefined && activity.kind !== "sleep") ||
+    (activity.locked !== undefined && typeof activity.locked !== "boolean") ||
+    (activity.visual !== undefined && activity.visual !== "night")
+  ) {
+    return null;
+  }
+
+  return {
+    id: activity.id,
+    label: kind === "sleep" ? "Sleep" : activity.label,
+    hours: activity.hours,
+    color: activity.color,
+    ...(kind ? { period: "day" as const } : period ? { period } : {}),
+    ...(kind ? { kind, locked: true, visual: "night" as const } : {}),
+  };
+}
+
+function normalizeActivities(value: unknown): Activity[] | null {
+  if (!Array.isArray(value)) return null;
+
+  const activities = value.map(normalizeActivity);
+  if (activities.some((activity) => activity === null)) return null;
+
+  const normalized = activities as Activity[];
+  const ids = new Set(normalized.map((activity) => activity.id));
+  return ids.size === normalized.length ? normalized : null;
 }
 
 function readStoredState(): TimeState {
@@ -45,17 +85,26 @@ function readStoredState(): TimeState {
     if (!stored) return fallback;
 
     const value = JSON.parse(stored) as Partial<TimeState>;
+    const obligationCandidates = normalizeActivities(value.obligations);
+    const timeWasterCandidates = normalizeActivities(value.timeWasters);
+    const storedObligations =
+      obligationCandidates?.filter((activity) => activity.kind === "sleep")
+        .length === 1
+        ? obligationCandidates
+        : null;
+    const storedTimeWasters = timeWasterCandidates?.some(
+      (activity) => activity.kind === "sleep",
+    )
+      ? null
+      : timeWasterCandidates;
+    const obligations = storedObligations ?? fallback.obligations;
+    const timeWasters = storedTimeWasters ?? fallback.timeWasters;
+    const activitiesFitDay =
+      totalActivityHours([...obligations, ...timeWasters]) <= DAY_HOURS;
+
     return {
-      obligations:
-        Array.isArray(value.obligations) &&
-        value.obligations.every(isActivity)
-          ? value.obligations
-          : fallback.obligations,
-      timeWasters:
-        Array.isArray(value.timeWasters) &&
-        value.timeWasters.every(isActivity)
-          ? value.timeWasters
-          : fallback.timeWasters,
+      obligations: activitiesFitDay ? obligations : fallback.obligations,
+      timeWasters: activitiesFitDay ? timeWasters : fallback.timeWasters,
       birthDate:
         typeof value.birthDate === "string"
           ? value.birthDate
