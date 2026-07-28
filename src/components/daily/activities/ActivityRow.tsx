@@ -29,7 +29,7 @@ function ActivityRow({
 
   return (
     <div
-      className="daily-activity"
+      className={`daily-activity${hoursControl === "slider" ? " daily-activity--slider" : ""}`}
       style={{
         minWidth: 0,
         minHeight: 60,

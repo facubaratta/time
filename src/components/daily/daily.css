@@ -296,8 +296,15 @@
     row-gap: 8px;
   }
 
+  .daily-activity--slider {
+    grid-template-areas:
+      "color name remove"
+      "value value value"
+      "hours hours hours" !important;
+  }
+
   .daily-activity output {
-    grid-area: hours !important;
+    grid-area: value !important;
     justify-self: end;
   }
 
