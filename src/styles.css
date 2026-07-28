@@ -84,6 +84,9 @@ button {
     margin-left: 0;
   }
 
+  .section-header__content {
+    --section-indent: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

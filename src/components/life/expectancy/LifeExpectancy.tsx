@@ -3,7 +3,6 @@ import { progress } from "../../../time";
 import ProgressBar from "../../ProgressBar";
 import LifeTimeline from "./LifeTimeline";
 import { birthdayInYear, getAge, parseBirthDate } from "../lifeProgress";
-import LifeStats from "./LifeStats";
 import Input from "./Input";
 import RemainingPercentage from "./RemainingPercentage";
 
@@ -104,11 +103,6 @@ function LifeExpectancy({
           </div>
         )}
       </div>
-      {expectedEnd && elapsed !== null && (
-        <LifeStats
-          remaining={Math.max(0, expectedEnd.getTime() - now.getTime())}
-        />
-      )}
     </div>
   );
 }
