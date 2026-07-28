@@ -1,3 +1,4 @@
+import DailyTime from "./components/daily/DailyTime";
 import LifeSection from "./components/life/LifeSection";
 import TimePeriods from "./components/time/TimePeriods";
 
@@ -33,6 +34,7 @@ function App() {
         </p>
         <TimePeriods />
       </header>
+      <DailyTime />
       <LifeSection />
     </main>
   );
