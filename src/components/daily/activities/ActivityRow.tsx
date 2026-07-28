@@ -1,83 +1,62 @@
-import { useId } from "react";
-import { formatHours } from "../dailyTimeUtils";
-import type { Activity } from "../dailyTimeUtils";
+import {
+  averageDailyHours,
+  formatAnnualDuration,
+  formatHours,
+} from "../dailyTimeUtils"
+import type { Activity } from "../dailyTimeUtils"
+import ActivityColorControl from "./ActivityColorControl"
+import HoursControl from "./HoursControl"
 
-type EditableField = "label" | "hours" | "color";
-
-const visuallyHidden = {
-  width: 1,
-  height: 1,
-  padding: 0,
-  position: "absolute",
-  overflow: "hidden",
-  clip: "rect(0, 0, 0, 0)",
-  whiteSpace: "nowrap",
-  border: 0,
-} as const;
+export type EditableField = "label" | "hours" | "color"
 
 type Props = {
-  activity: Activity;
-  groupTitle: string;
-  index: number;
-  onChange: (id: number, field: EditableField, value: string) => void;
-  onRemove: (id: number) => void;
-};
+  activity: Activity
+  groupTitle: string
+  hoursControl: "number" | "slider"
+  maxHours?: number
+  index: number
+  onChange: (id: number, field: EditableField, value: string) => void
+  onPeriodChange: (id: number, period: "day" | "week") => void
+  onRemove: (id: number) => void
+}
 
 function ActivityRow({
   activity,
   groupTitle,
+  hoursControl,
+  maxHours,
   index,
   onChange,
+  onPeriodChange,
   onRemove,
 }: Props) {
-  const sliderId = useId();
-  const activityName = activity.label || "activity";
+  const activityName = activity.label || "activity"
 
   return (
     <div
       className="daily-activity"
       style={{
         minWidth: 0,
-        minHeight: 78,
+        minHeight: 60,
         display: "grid",
-        gridTemplateColumns: "34px minmax(0, 1fr) max-content 34px",
+        gridTemplateColumns:
+          hoursControl === "slider"
+            ? "34px minmax(0, 1fr) max-content 34px"
+            : "34px minmax(0, 1fr) 174px 34px",
         gridTemplateAreas:
-          '"color name value remove" "color slider slider remove"',
+          hoursControl === "slider"
+            ? '"color name value remove" "color hours hours remove"'
+            : '"color name hours remove"',
         alignItems: "center",
         columnGap: 10,
         borderBottom: "1px solid #2c2c2c",
       }}
     >
-      <label
-        className="daily-activity__color"
-        title={`Choose a color for ${activityName}`}
-        style={{ gridArea: "color" }}
-      >
-        <span style={visuallyHidden}>{`Color for ${activityName}`}</span>
-        <input
-          aria-label={`Color for ${activityName}`}
-          type="color"
-          value={activity.color}
-          style={{
-            width: 30,
-            height: 30,
-            display: "block",
-            padding: 0,
-            overflow: "hidden",
-            border: "1px solid #444",
-            borderRadius: "50%",
-            background: "transparent",
-            cursor: "pointer",
-          }}
-          onChange={(event) =>
-            onChange(activity.id, "color", event.target.value)
-          }
-        />
-      </label>
+      <ActivityColorControl
+        activity={activity}
+        onChange={(color) => onChange(activity.id, "color", color)}
+      />
       <label style={{ gridArea: "name" }}>
-        <span style={visuallyHidden}>
-          {`${groupTitle} activity ${index + 1}`}
-        </span>
         <input
           aria-label={`${groupTitle} activity ${index + 1}`}
           value={activity.label}
@@ -95,52 +74,59 @@ function ActivityRow({
             onChange(activity.id, "label", event.target.value)
           }
         />
+        {activity.visual === "night" && (
+          <span style={{ color: "#777", fontSize: 10 }}>
+            {formatAnnualDuration(averageDailyHours(activity))} per year
+          </span>
+        )}
+        {activity.period === "week" && (
+          <span
+            style={{
+              display: "block",
+              color: "#777",
+              fontSize: 10,
+            }}
+          >
+            {formatHours(averageDailyHours(activity))} per day on average
+          </span>
+        )}
       </label>
-      <output
-        htmlFor={sliderId}
-        style={{
-          gridArea: "value",
-          color: "#aaa",
-          fontSize: 11,
-          whiteSpace: "nowrap",
-        }}
-      >
-        {formatHours(activity.hours)}
-      </output>
-      <button
-        className="daily-activity__remove"
-        type="button"
-        aria-label={`Remove ${activityName}`}
-        onClick={() => onRemove(activity.id)}
-        style={{ gridArea: "remove" }}
-      >
-        ×
-      </button>
-      <label style={{ minWidth: 0, gridArea: "slider" }}>
-        <span style={visuallyHidden}>{`Hours spent on ${activityName}`}</span>
-        <input
-          id={sliderId}
-          aria-label={`Hours spent on ${activityName}`}
-          type="range"
-          min="0"
-          max="24"
-          step="0.25"
-          value={activity.hours}
+      {activity.locked ? (
+        <span
+          aria-label={`${activityName} cannot be removed`}
+          title={`${activityName} cannot be removed`}
           style={{
-            width: "100%",
-            height: 22,
-            display: "block",
-            margin: 0,
-            cursor: "pointer",
-            accentColor: activity.color,
+            gridArea: "remove",
+            color: "#666",
+            fontSize: 13,
+            textAlign: "center",
           }}
-          onChange={(event) =>
-            onChange(activity.id, "hours", event.target.value)
-          }
-        />
-      </label>
+        >
+          ◇
+        </span>
+      ) : (
+        <button
+          className="daily-activity__remove"
+          type="button"
+          aria-label={`Remove ${activityName}`}
+          onClick={() => onRemove(activity.id)}
+          style={{ gridArea: "remove" }}
+        >
+          ×
+        </button>
+      )}
+      <HoursControl
+        activity={activity}
+        control={hoursControl}
+        maxHours={maxHours}
+        period={activity.period ?? "day"}
+        onChange={(hours) => onChange(activity.id, "hours", hours)}
+        onPeriodChange={(period) =>
+          onPeriodChange(activity.id, period)
+        }
+      />
     </div>
-  );
+  )
 }
 
-export default ActivityRow;
+export default ActivityRow

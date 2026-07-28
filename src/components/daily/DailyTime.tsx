@@ -1,20 +1,12 @@
 import { useMemo, useState } from "react";
 import ActivityList from "./activities/ActivityList";
-import { calculateDailyTotals } from "./dailyTimeUtils";
+import { calculateDailyTotals, defaultActivities } from "./dailyTimeUtils";
 import DailySummary from "./summary/DailySummary";
-import type { Activity } from "./dailyTimeUtils";
 import "./daily.css";
 
 function DailyTime() {
-  const [obligations, setObligations] = useState<Activity[]>([
-    { id: 1, label: "Sleep", hours: 8, color: "#7c6cff" },
-    { id: 2, label: "Work", hours: 8, color: "#32b6ff" },
-    { id: 3, label: "Meals & chores", hours: 2, color: "#45d49a" },
-  ]);
-  const [timeWasters, setTimeWasters] = useState<Activity[]>([
-    { id: 4, label: "TikTok", hours: 1, color: "#ff557a" },
-    { id: 5, label: "TV", hours: 1, color: "#ffad42" },
-  ]);
+  const [obligations, setObligations] = useState(defaultActivities.obligations);
+  const [timeWasters, setTimeWasters] = useState(defaultActivities.wasters);
 
   const totals = useMemo(() => {
     return calculateDailyTotals(obligations, timeWasters);
@@ -39,15 +31,19 @@ function DailyTime() {
         <ActivityList
           eyebrow="Must do"
           title="Obligations"
+          hoursControl="number"
           defaultColor="#32b6ff"
           activities={obligations}
+          totalHoursUsed={totals.required + totals.wasted}
           onChange={setObligations}
         />
         <ActivityList
           eyebrow="Could reclaim"
           title="Time wasters"
+          hoursControl="slider"
           defaultColor="#ff557a"
           activities={timeWasters}
+          totalHoursUsed={totals.required + totals.wasted}
           onChange={setTimeWasters}
         />
       </div>

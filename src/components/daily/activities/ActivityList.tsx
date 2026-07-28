@@ -1,27 +1,51 @@
 import ActivityRow from "./ActivityRow";
-import { formatHours, totalActivityHours } from "../dailyTimeUtils";
+import {
+  DAY_HOURS,
+  activityFrequency,
+  averageDailyHours,
+  formatHours,
+  totalActivityHours,
+} from "../dailyTimeUtils";
 import type { Activity } from "../dailyTimeUtils";
 
 type Props = {
   title: string;
   eyebrow: string;
+  hoursControl: "number" | "slider";
   defaultColor: string;
   activities: Activity[];
+  totalHoursUsed: number;
   onChange: (activities: Activity[]) => void;
 };
 
 function ActivityList({
   title,
   eyebrow,
+  hoursControl,
   defaultColor,
   activities,
+  totalHoursUsed,
   onChange,
 }: Props) {
+  const maxHoursFor = (activity: Activity) => {
+    const frequency = activityFrequency(activity);
+    if (frequency === 0) return undefined;
+
+    const availableAverage =
+      DAY_HOURS - totalHoursUsed + averageDailyHours(activity);
+    return Math.max(0, availableAverage / frequency);
+  };
+
   const updateActivity = (
     id: number,
     field: "label" | "hours" | "color",
     value: string,
   ) => {
+    const currentActivity = activities.find((activity) => activity.id === id);
+    const maxHours = currentActivity
+      ? maxHoursFor(currentActivity)
+      : undefined;
+
     onChange(
       activities.map((activity) =>
         activity.id === id
@@ -29,7 +53,16 @@ function ActivityList({
               ...activity,
               [field]:
                 field === "hours"
-                  ? Math.max(0, Number(value) || 0)
+                  ? hoursControl === "slider"
+                    ? Math.min(
+                        12,
+                        maxHours ?? 12,
+                        Math.max(0, Number(value) || 0),
+                      )
+                    : Math.min(
+                        maxHours ?? Number.POSITIVE_INFINITY,
+                        Math.max(0.5, Number(value) || 0.5),
+                      )
                   : value,
             }
           : activity,
@@ -37,14 +70,55 @@ function ActivityList({
     );
   };
 
+  const updateActivityPeriod = (
+    id: number,
+    period: "day" | "week",
+  ) => {
+    onChange(
+      activities.map((activity) => {
+        if (activity.id !== id) return activity;
+
+        const frequency = period === "week" ? 1 / 7 : 1;
+        const otherDailyHours =
+          totalHoursUsed - averageDailyHours(activity);
+        const maxHours =
+          frequency > 0
+            ? Math.max(0, (DAY_HOURS - otherDailyHours) / frequency)
+            : Number.POSITIVE_INFINITY;
+
+        return {
+          ...activity,
+          period,
+          hours: Math.min(activity.hours, maxHours),
+        };
+      }),
+    );
+  };
+
   const removeActivity = (id: number) => {
-    onChange(activities.filter((activity) => activity.id !== id));
+    onChange(
+      activities.filter(
+        (activity) => activity.id !== id || activity.locked,
+      ),
+    );
   };
 
   const addActivity = () => {
+    const availableHours = Math.max(0, DAY_HOURS - totalHoursUsed);
+    const initialHours =
+      hoursControl === "slider" ? Math.min(1, availableHours) : 0.5;
+
+    if (hoursControl === "number" && availableHours < initialHours) return;
+
     onChange([
       ...activities,
-      { id: Date.now(), label: "", hours: 1, color: defaultColor },
+      {
+        id: Date.now(),
+        label: "",
+        hours: initialHours,
+        color: defaultColor,
+        ...(hoursControl === "number" ? { period: "day" as const } : {}),
+      },
     ]);
   };
 
@@ -99,8 +173,11 @@ function ActivityList({
             key={activity.id}
             activity={activity}
             groupTitle={title}
+            hoursControl={hoursControl}
+            maxHours={maxHoursFor(activity)}
             index={index}
             onChange={updateActivity}
+            onPeriodChange={updateActivityPeriod}
             onRemove={removeActivity}
           />
         ))}
@@ -109,7 +186,17 @@ function ActivityList({
       <button
         className="daily-add"
         type="button"
+        disabled={
+          hoursControl === "number" && DAY_HOURS - totalHoursUsed < 0.5
+        }
         onClick={addActivity}
+        style={{
+          opacity:
+            hoursControl === "number" &&
+            DAY_HOURS - totalHoursUsed < 0.5
+              ? 0.35
+              : 1,
+        }}
       >
         <span aria-hidden="true">＋</span> Add activity
       </button>
