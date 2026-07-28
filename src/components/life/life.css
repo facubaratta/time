@@ -1,14 +1,5 @@
-.birth-date-input {
-  flex: 0 1 240px;
-  padding: 20px;
-}
-
-.birth-date-cycles {
-  flex: 1 1 440px;
-}
-
-.birth-date-placeholder {
-  flex: 1 1 440px;
+.birth-date-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .life-cycle {
@@ -43,10 +34,12 @@
 }
 
 @media (max-width: 720px) {
-  .birth-date-input,
-  .birth-date-cycles,
-  .birth-date-placeholder {
-    flex-basis: 100%;
+  .birth-date-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .birth-date-grid > [data-wide] {
+    grid-column: auto !important;
   }
 
   .expectancy-input {
@@ -69,7 +62,6 @@
 }
 
 @media (max-width: 420px) {
-  .birth-date-input,
   .life-cycle,
   .life-expectancy__content {
     padding: 16px;

@@ -54,16 +54,12 @@ const BirthDate = ({ birthDate, onChange }: Props) => {
   const cycles = date && age !== null ? getCycles(now, date, age) : [];
 
   return (
-    <div style={{ display: "flex", flexWrap: "wrap" }}>
+    <div className="birth-date-grid" style={{ display: "grid" }}>
       <Input birthDate={birthDate} age={age} onChange={onChange} />
       {age !== null ? (
         <div
-          className="birth-date-cycles"
           style={{
-            minWidth: 0,
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit, minmax(min(220px, 100%), 1fr))",
+            display: "contents",
           }}
         >
           {cycles.map((cycle) => (
@@ -72,10 +68,11 @@ const BirthDate = ({ birthDate, onChange }: Props) => {
         </div>
       ) : (
         <div
-          className="birth-date-placeholder"
+          data-wide
           style={{
             minWidth: 0,
             minHeight: 100,
+            gridColumn: "span 2",
             display: "grid",
             placeItems: "center",
             padding: 20,
