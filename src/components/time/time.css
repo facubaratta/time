@@ -4,10 +4,23 @@
 
 .time-block {
   padding: 20px;
+  background: rgba(7, 7, 7, 0.82);
+  transition:
+    background-color 240ms ease,
+    transform 240ms ease;
+}
+
+.time-block:hover {
+  background: var(--surface-raised);
+  transform: translateY(-2px);
 }
 
 .time-block__header {
   gap: 20px;
+}
+
+.time-block [role="progressbar"] {
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.04);
 }
 
 @media (max-width: 720px) {

@@ -6,7 +6,7 @@
     "cycles timeline";
   gap: 1px;
   border: 1px solid #333;
-  background: #333;
+  background: var(--line);
 }
 
 .birth-date-layout,
@@ -17,7 +17,7 @@
 .birth-date-input {
   grid-area: birth;
   padding: 18px 20px;
-  background: #000;
+  background: rgba(5, 5, 5, 0.92);
 }
 
 .birth-date-cycles {
@@ -34,14 +34,19 @@
   place-items: center;
   padding: 20px;
   background: #000;
-  color: #666;
+  color: #777;
   font-size: 12px;
   text-align: center;
 }
 
 .life-cycle {
   padding: 16px;
-  background: #000;
+  background: rgba(5, 5, 5, 0.94);
+  transition: background-color 220ms ease;
+}
+
+.life-cycle:hover {
+  background: var(--surface-raised);
 }
 
 .life-cycle__header {
@@ -52,7 +57,7 @@
   min-width: 0;
   grid-area: expectancy;
   padding: 18px 24px;
-  background: #000;
+  background: rgba(5, 5, 5, 0.92);
 }
 
 .life-expectancy-progress-cell {
@@ -63,7 +68,9 @@
   flex-direction: column;
   justify-content: center;
   padding: 24px;
-  background: #000;
+  background:
+    radial-gradient(circle at 82% 35%, rgba(82, 77, 61, 0.11), transparent 46%),
+    #050505;
 }
 
 .expectancy-input {
@@ -95,6 +102,7 @@
   font-weight: 400;
   letter-spacing: -0.06em;
   line-height: 0.9;
+  color: #f4f2eb;
 }
 
 .remaining-time__value > span {

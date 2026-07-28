@@ -2,6 +2,11 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.daily-summary__meta,
+.daily-list {
+  position: relative;
+}
+
 .daily-summary__meta {
   display: flex;
   align-items: center;
@@ -44,10 +49,19 @@
   border-left: 1px solid #333;
 }
 
+.daily-activity {
+  transition: background-color 180ms ease;
+}
+
+.daily-activity:focus-within {
+  background: rgba(255, 255, 255, 0.025);
+}
+
 .daily-activity input:focus-visible,
+.daily-activity select:focus-visible,
 .daily-add:focus-visible,
 .daily-activity__remove:focus-visible {
-  outline: 1px solid #fff;
+  outline: 1px solid var(--warm);
   outline-offset: 3px;
 }
 
@@ -66,7 +80,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #666;
+  color: #777;
   cursor: pointer;
   font-size: 20px;
   line-height: 1;
@@ -78,16 +92,21 @@
 
 .daily-add {
   margin-top: 18px;
-  padding: 0;
+  padding: 7px 0;
   border: 0;
   background: transparent;
   color: #aaa;
   cursor: pointer;
   font-size: 13px;
+  letter-spacing: 0.01em;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 .daily-add:hover {
   color: #fff;
+  transform: translateX(3px);
 }
 
 @media (max-width: 720px) {
