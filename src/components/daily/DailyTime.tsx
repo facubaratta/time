@@ -1,12 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import ActivityList from "./activities/ActivityList";
-import { calculateDailyTotals, defaultActivities } from "./dailyTimeUtils";
+import { calculateDailyTotals } from "./dailyTimeUtils";
 import DailySummary from "./summary/DailySummary";
+import { timeStore, useTimeStore } from "../../timeStore";
 import "./daily.css";
 
 function DailyTime() {
-  const [obligations, setObligations] = useState(defaultActivities.obligations);
-  const [timeWasters, setTimeWasters] = useState(defaultActivities.wasters);
+  const { obligations, timeWasters } = useTimeStore();
 
   const totals = useMemo(() => {
     return calculateDailyTotals(obligations, timeWasters);
@@ -35,7 +35,7 @@ function DailyTime() {
           defaultColor="#32b6ff"
           activities={obligations}
           totalHoursUsed={totals.required + totals.wasted}
-          onChange={setObligations}
+          onChange={timeStore.setObligations}
         />
         <ActivityList
           eyebrow="Could reclaim"
@@ -44,7 +44,7 @@ function DailyTime() {
           defaultColor="#ff557a"
           activities={timeWasters}
           totalHoursUsed={totals.required + totals.wasted}
-          onChange={setTimeWasters}
+          onChange={timeStore.setTimeWasters}
         />
       </div>
     </section>

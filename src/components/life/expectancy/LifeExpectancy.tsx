@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useNow from "../../../useNow";
 import { progress } from "../../../time";
 import ProgressBar from "../../ProgressBar";
@@ -18,9 +17,18 @@ const sectionColors = [
   "#f472b6",
 ];
 
-function LifeExpectancy({ birthDate }: { birthDate: string }) {
+type Props = {
+  birthDate: string;
+  expectancy: number;
+  onExpectancyChange: (value: number) => void;
+};
+
+function LifeExpectancy({
+  birthDate,
+  expectancy,
+  onExpectancyChange,
+}: Props) {
   const now = useNow();
-  const [expectancy, setExpectancy] = useState(80);
   const date = parseBirthDate(birthDate);
   const currentAge = date ? getAge(now, date) : null;
   const effectiveExpectancy = Math.max(expectancy, currentAge ?? 0);
@@ -57,7 +65,7 @@ function LifeExpectancy({ birthDate }: { birthDate: string }) {
         <Input
           currentAge={currentAge}
           expectancy={effectiveExpectancy}
-          onChange={setExpectancy}
+          onChange={onExpectancyChange}
         />
         {date && expectedEnd && elapsed !== null ? (
           <div

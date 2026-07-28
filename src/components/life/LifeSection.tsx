@@ -1,14 +1,19 @@
-import { useState } from "react";
 import BirthDate from "./birthdate/BirthDate";
 import LifeExpectancy from "./expectancy/LifeExpectancy";
+import { timeStore, useTimeStore } from "../../timeStore";
 import "./life.css";
 
 function LifeSection() {
-  const [birthDate, setBirthDate] = useState("");
+  const { birthDate, lifeExpectancy } = useTimeStore();
+
   return (
-    <section>
-      <BirthDate birthDate={birthDate} onChange={setBirthDate} />
-      <LifeExpectancy birthDate={birthDate} />
+    <section aria-label="Life expectancy">
+      <BirthDate birthDate={birthDate} onChange={timeStore.setBirthDate} />
+      <LifeExpectancy
+        birthDate={birthDate}
+        expectancy={lifeExpectancy}
+        onExpectancyChange={timeStore.setLifeExpectancy}
+      />
     </section>
   );
 }
