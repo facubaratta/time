@@ -12,22 +12,13 @@ function App() {
       }}
     >
       <header className="site-header">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            color: "var(--muted)",
-            fontSize: 11,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-          }}
-        >
+        <div className="site-kicker">
           <span>Personal time atlas</span>
           <span aria-hidden="true">TM—01</span>
         </div>
         <h1>
           Time{" "}
-          <span style={{ display: "block", color: "#858585" }}>Magnitude</span>
+          <span>Magnitude</span>
         </h1>
         <p>
           See the scale of time—from the hour in front of you to the decades
