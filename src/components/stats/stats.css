@@ -24,6 +24,7 @@
 }
 
 .life-counter {
+  grid-column: span 2;
   min-width: 0;
   padding: 22px;
   display: flex;
@@ -33,13 +34,12 @@
   border-bottom: 1px solid #252525;
 }
 
-.life-counter:nth-child(-n + 3) {
-  grid-column: span 2;
+.life-counter:nth-child(n + 4) {
+  border-bottom: 0;
 }
 
-.life-counter:nth-child(n + 4) {
-  grid-column: span 3;
-  border-bottom: 0;
+.life-counter:nth-child(3n) {
+  border-right: 0;
 }
 
 .life-counter > span {
@@ -47,6 +47,11 @@
   font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.life-counter--night > span {
+  color: #fff3bd;
+  font-weight: 700;
 }
 
 .life-counter > strong {
@@ -163,15 +168,21 @@
   }
 
   .life-counter,
-  .life-counter:nth-child(-n + 3),
   .life-counter:nth-child(n + 4) {
     grid-column: span 1;
     border-bottom: 1px solid #252525;
   }
 
-  .life-counter:last-child {
-    grid-column: 1 / -1;
+  .life-counter:nth-last-child(-n + 2) {
     border-bottom: 0;
+  }
+
+  .life-counter:nth-child(3n) {
+    border-right: 1px solid #252525;
+  }
+
+  .life-counter:nth-child(2n) {
+    border-right: 0;
   }
 }
 

@@ -4,7 +4,7 @@ import {
   formatHours,
 } from "../dailyTimeUtils"
 import type { Activity } from "../dailyTimeUtils"
-import NightSky from "./NightSky"
+import NightSky, { NIGHT_SKY_BACKGROUND } from "./NightSky"
 import TimeLeft from "./TimeLeft"
 
 function DailyBar({
@@ -46,14 +46,7 @@ function DailyBar({
             overflow: "hidden",
             background:
               activity.visual === "night"
-                ? `
-                  radial-gradient(circle at 12% 22%, #fff 0 1px, transparent 1.5px),
-                  radial-gradient(circle at 30% 68%, #c9d8ff 0 1px, transparent 1.5px),
-                  radial-gradient(circle at 48% 18%, #fff 0 1px, transparent 1.5px),
-                  radial-gradient(circle at 67% 72%, #d8e3ff 0 1px, transparent 1.5px),
-                  radial-gradient(circle at 84% 30%, #fff 0 1px, transparent 1.5px),
-                  linear-gradient(135deg, #080d22, #172453)
-                `
+                ? NIGHT_SKY_BACKGROUND
                 : activity.color,
             flexBasis: `${(averageDailyHours(activity) / DAY_HOURS) * 100}%`,
             transition: "flex-basis 220ms ease",

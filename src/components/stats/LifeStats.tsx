@@ -3,9 +3,11 @@ import { DAY, HOUR, MINUTE, WEEK } from "../../time";
 import useNow from "../../useNow";
 import {
   DAY_HOURS,
+  averageDailyHours,
   calculateDailyTotals,
   formatAnnualDuration,
 } from "../daily/dailyTimeUtils";
+import { NIGHT_SKY_BACKGROUND } from "../daily/summary/NightSky";
 import { birthdayInYear, getAge, parseBirthDate } from "../life/lifeProgress";
 import { useTimeStore } from "../../timeStore";
 import "./stats.css";
@@ -37,12 +39,17 @@ function formatDuration(days: number) {
 function Counter({
   label,
   value,
+  background,
 }: {
   label: string;
   value: number | string | null;
+  background?: string;
 }) {
   return (
-    <div className="life-counter">
+    <div
+      className={`life-counter${background ? " life-counter--night" : ""}`}
+      style={{ background }}
+    >
       <span>{label}</span>
       <strong>
         {value === null
@@ -85,8 +92,18 @@ function LifeStats() {
   const freeDayPercentage = Math.round(
     (totals.remaining / DAY_HOURS) * 100,
   );
+  const sleep = obligations.find((activity) => activity.visual === "night");
 
-  const remainingStats: Array<[string, number | null]> = [
+  const remainingStats: Array<
+    [string, number | string | null, string?]
+  > = [
+    [
+      "Sleep / year",
+      sleep
+        ? formatAnnualDuration(averageDailyHours(sleep))
+        : null,
+      NIGHT_SKY_BACKGROUND,
+    ],
     ["Weekends", remaining === null ? null : remaining / WEEK],
     ["Days", remainingDays],
     ["Hours", remaining === null ? null : remaining / HOUR],
@@ -98,8 +115,13 @@ function LifeStats() {
     <section className="life-stats" aria-label="Life stats">
       <div className="life-stats__time">
         <div className="life-stats__counters">
-          {remainingStats.map(([label, value]) => (
-            <Counter key={label} label={label} value={value} />
+          {remainingStats.map(([label, value, background]) => (
+            <Counter
+              key={label}
+              label={label}
+              value={value}
+              background={background}
+            />
           ))}
         </div>
       </div>
