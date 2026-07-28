@@ -2,11 +2,11 @@ import { useMemo } from "react";
 import { DAY, HOUR, MINUTE, WEEK } from "../../time";
 import useNow from "../../useNow";
 import {
+  DAY_HOURS,
   calculateDailyTotals,
   formatAnnualDuration,
 } from "../daily/dailyTimeUtils";
 import { birthdayInYear, getAge, parseBirthDate } from "../life/lifeProgress";
-import SectionHeader from "../SectionHeader";
 import { useTimeStore } from "../../timeStore";
 import "./stats.css";
 
@@ -34,31 +34,23 @@ function formatDuration(days: number) {
   return `${rounded} ${unit}`;
 }
 
-function Stat({
+function Counter({
   label,
   value,
-  suffix = "left",
 }: {
   label: string;
   value: number | string | null;
-  suffix?: string;
 }) {
-  const text =
-    typeof value === "number"
-      ? formatNumber(value)
-      : value === null
-        ? "—"
-        : value;
-  const fontSize = 140 / text.length;
-
   return (
-    <div className="life-stat">
-      <strong style={{ fontSize: `clamp(14px, ${fontSize}cqw, 30px)` }}>
-        {text}
+    <div className="life-counter">
+      <span>{label}</span>
+      <strong>
+        {value === null
+          ? "—"
+          : typeof value === "number"
+            ? formatNumber(value)
+            : value}
       </strong>
-      <span>
-        {label} {suffix}
-      </span>
     </div>
   );
 }
@@ -85,42 +77,68 @@ function LifeStats() {
     remaining === null
       ? null
       : (remaining / DAY) * (totals.wasted / 24);
+  const freeDaysAcrossRemainingLife =
+    remaining === null
+      ? null
+      : (remaining / DAY) * (totals.remaining / DAY_HOURS);
+  const remainingDays = remaining === null ? null : remaining / DAY;
+  const freeDayPercentage = Math.round(
+    (totals.remaining / DAY_HOURS) * 100,
+  );
 
   const remainingStats: Array<[string, number | null]> = [
-    ["Weeks / weekends", remaining === null ? null : remaining / WEEK],
-    ["Days", remaining === null ? null : remaining / DAY],
+    ["Weekends", remaining === null ? null : remaining / WEEK],
+    ["Days", remainingDays],
     ["Hours", remaining === null ? null : remaining / HOUR],
     ["Minutes", remaining === null ? null : remaining / MINUTE],
     ["Seconds", remaining === null ? null : remaining / 1000],
   ];
 
   return (
-    <section
-      aria-label="Life stats"
-      style={{ paddingTop: "clamp(64px, 9vw, 128px)" }}
-    >
-      <SectionHeader
-        title="Life stats"
-        description="The scale of the time ahead—and what your current habits add up to."
-      />
-      <div className="life-stats">
-        {remainingStats.map(([label, value]) => (
-          <Stat key={label} label={label} value={value} />
-        ))}
-        <Stat
-          label="Time wasters"
-          value={formatAnnualDuration(totals.wasted)}
-          suffix="per year"
-        />
-        <Stat
-          label="Time wasters"
-          value={
-            wastedDaysAcrossRemainingLife === null
-              ? null
-              : formatDuration(wastedDaysAcrossRemainingLife)
-          }
-          suffix="over your remaining life"
-        />
+    <section className="life-stats" aria-label="Life stats">
+      <div className="life-stats__time">
+        <div className="life-stats__counters">
+          {remainingStats.map(([label, value]) => (
+            <Counter key={label} label={label} value={value} />
+          ))}
+        </div>
+      </div>
+
+      <div className="life-stats__free">
+        <div className="life-stats__free-label">
+          <span>At your current rhythm</span>
+          <strong>
+            FREE
+            <br />
+            TIME LEFT
+          </strong>
+        </div>
+        <div className="life-stats__free-total">
+          <strong>
+            {freeDaysAcrossRemainingLife === null
+              ? "—"
+              : formatDuration(freeDaysAcrossRemainingLife)}
+          </strong>
+          <span>{freeDayPercentage}% of each future day remains yours</span>
+        </div>
+        <div className="life-stats__free-notes">
+          <div>
+            <span>Free each year</span>
+            <strong>{formatAnnualDuration(totals.remaining)}</strong>
+          </div>
+          <div>
+            <span>Drifting each year</span>
+            <strong>{formatAnnualDuration(totals.wasted)}</strong>
+          </div>
+          <div>
+            <span>Still reclaimable</span>
+            <strong>
+              {wastedDaysAcrossRemainingLife === null
+                ? "—"
+                : formatDuration(wastedDaysAcrossRemainingLife)}
+            </strong>
+          </div>
+        </div>
       </div>
     </section>
   );
