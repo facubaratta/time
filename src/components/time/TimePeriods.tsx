@@ -8,7 +8,7 @@ const TimePeriods = () => {
   const now = useNow();
   const periods: Period[] = useMemo(() => getPeriods(now), [now]);
   return (
-    <section>
+    <section style={{ paddingTop: "clamp(64px, 9vw, 128px)" }}>
       <div
         className="time-grid"
         style={{
