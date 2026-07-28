@@ -4,7 +4,7 @@ import ProgressBar from "../../ProgressBar";
 import LifeTimeline from "./LifeTimeline";
 import { birthdayInYear, getAge, parseBirthDate } from "../lifeProgress";
 import Input from "./Input";
-import RemainingPercentage from "./RemainingPercentage";
+import RemainingTime from "./RemainingTime";
 
 const sectionColors = [
   "#a78bfa",
@@ -36,6 +36,11 @@ function LifeExpectancy({
       ? birthdayInYear(date, date.getFullYear() + effectiveExpectancy)
       : null;
   const elapsed = date && expectedEnd ? progress(now, date, expectedEnd) : null;
+  const remainingYears =
+    expectedEnd === null
+      ? null
+      : Math.max(0, expectedEnd.getTime() - now.getTime()) /
+        (365.2425 * 24 * 60 * 60 * 1000);
   const sectionBoundaries = [
     0,
     7,
@@ -88,7 +93,10 @@ function LifeExpectancy({
                 sectionColors={sections.map((section) => section.color)}
               />
             </div>
-            <RemainingPercentage elapsed={elapsed} />
+            <RemainingTime
+              remainingYears={remainingYears}
+              remainingPercentage={elapsed === null ? null : 100 - elapsed}
+            />
           </div>
         ) : (
           <div style={{ color: "#666", fontSize: 15 }}>
