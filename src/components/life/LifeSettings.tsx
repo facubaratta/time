@@ -17,6 +17,7 @@ function LifeSettings() {
       <BirthDateInput
         birthDate={birthDate}
         age={currentAge}
+        required={currentAge === null}
         onChange={timeStore.setBirthDate}
       />
       <div className="life-expectancy-input-cell">
