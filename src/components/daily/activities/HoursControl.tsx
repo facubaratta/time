@@ -7,6 +7,7 @@ type Props = {
   control: "number" | "slider"
   maxHours?: number
   period: "day" | "week"
+  periodLocked?: boolean
   onChange: (hours: string) => void
   onPeriodChange: (period: "day" | "week") => void
 }
@@ -16,6 +17,7 @@ function HoursControl({
   control,
   maxHours,
   period,
+  periodLocked = false,
   onChange,
   onPeriodChange,
 }: Props) {
@@ -88,6 +90,7 @@ function HoursControl({
           <select
             aria-label={`Frequency for ${activityName}`}
             value={period}
+            disabled={periodLocked}
             style={{
               minWidth: 0,
               flex: 1,

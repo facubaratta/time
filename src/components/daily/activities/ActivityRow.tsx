@@ -56,6 +56,7 @@ function ActivityRow({
           aria-label={`${groupTitle} activity ${index + 1}`}
           value={activity.label}
           placeholder="Name activity"
+          readOnly={activity.kind === "sleep"}
           style={{
             minWidth: 0,
             width: "100%",
@@ -99,6 +100,7 @@ function ActivityRow({
         control={hoursControl}
         maxHours={maxHours}
         period={activity.period ?? "day"}
+        periodLocked={activity.kind === "sleep"}
         onChange={(hours) => onChange(activity.id, "hours", hours)}
         onPeriodChange={(period) =>
           onPeriodChange(activity.id, period)

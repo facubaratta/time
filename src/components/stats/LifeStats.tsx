@@ -92,7 +92,7 @@ function LifeStats() {
   const freeDayPercentage = Math.round(
     (totals.remaining / DAY_HOURS) * 100,
   );
-  const sleep = obligations.find((activity) => activity.visual === "night");
+  const sleep = obligations.find((activity) => activity.kind === "sleep");
 
   const remainingStats: Array<
     [string, number | string | null, string?]

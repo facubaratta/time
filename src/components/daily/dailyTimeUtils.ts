@@ -7,6 +7,7 @@ export type Activity = {
   hours: number;
   color: string;
   period?: "day" | "week";
+  kind?: "sleep";
   locked?: boolean;
   visual?: "night";
 };
@@ -77,6 +78,7 @@ export const defaultActivities: Record<"obligations" | "wasters", Activity[]> =
         hours: 8,
         color: "#7c6cff",
         period: "day",
+        kind: "sleep",
         locked: true,
         visual: "night",
       },
