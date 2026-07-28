@@ -16,6 +16,7 @@ function LifeTimeline({
   const timelineRef = useRef<HTMLDivElement>(null)
   const todayRef = useRef<HTMLSpanElement>(null)
   const [todayIsVisible, setTodayIsVisible] = useState(false)
+  const [hiddenMilestones, setHiddenMilestones] = useState<number[]>([])
   const expectancy = endYear - birthYear
   const milestoneAges = useMemo(() => {
     const ages = [7, 12, 18]
@@ -35,16 +36,44 @@ function LifeTimeline({
 
     const updateTodayVisibility = () => {
       const todayBounds = today.getBoundingClientRect()
-      const labels = timeline.querySelectorAll<HTMLElement>(
+      const labels = Array.from(
+        timeline.querySelectorAll<HTMLElement>(
         '[data-timeline-label]',
+        ),
       )
-      const overlapsLabel = Array.from(labels).some((label) => {
+      const firstLabel = labels[0]
+      const lastLabel = labels.at(-1)
+      const visibleLabels = firstLabel ? [firstLabel] : []
+      const hiddenAges: number[] = []
+      const minimumGap = 4
+      const overlaps = (first: DOMRect, second: DOMRect) =>
+        first.left < second.right + minimumGap &&
+        first.right + minimumGap > second.left
+
+      labels.slice(1, -1).forEach((label) => {
         const labelBounds = label.getBoundingClientRect()
-        return (
-          todayBounds.left < labelBounds.right &&
-          todayBounds.right > labelBounds.left
-        )
+        const previousBounds = visibleLabels.at(-1)?.getBoundingClientRect()
+        const lastBounds = lastLabel?.getBoundingClientRect()
+        const doesNotFit =
+          (previousBounds && overlaps(labelBounds, previousBounds)) ||
+          (lastBounds && overlaps(labelBounds, lastBounds))
+
+        if (doesNotFit) {
+          hiddenAges.push(Number(label.dataset.timelineAge))
+        } else {
+          visibleLabels.push(label)
+        }
       })
+
+      if (lastLabel) visibleLabels.push(lastLabel)
+
+      setHiddenMilestones((current) =>
+        current.join(',') === hiddenAges.join(',') ? current : hiddenAges,
+      )
+
+      const overlapsLabel = visibleLabels.some((label) =>
+        overlaps(todayBounds, label.getBoundingClientRect()),
+      )
 
       setTodayIsVisible(!overlapsLabel)
     }
@@ -82,11 +111,13 @@ function LifeTimeline({
         <span
           key={age}
           data-timeline-label
+          data-timeline-age={age}
           style={{
             position: 'absolute',
             left: `${(age / expectancy) * 100}%`,
             transform: 'translateX(-50%)',
             color: sectionColors[index + 1],
+            visibility: hiddenMilestones.includes(age) ? 'hidden' : 'visible',
           }}
         >
           {age}
